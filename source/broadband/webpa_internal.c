@@ -65,7 +65,7 @@ char *objectList[] ={
 #if ! defined(_HUB4_PRODUCT_REQ_) || ! defined(_SCER11BEL_PRODUCT_REQ_)
 #if defined(_COSA_BCM_MIPS_)
 "Device.DPoE.",
-#else
+#elif !defined(PON_GATEWAY)
 "Device.X_CISCO_COM_CableModem.",
 #endif
 #endif
@@ -106,7 +106,9 @@ char *subObjectList[] =
 "Device.DeviceInfo.MemoryStatus.",
 "Device.DeviceInfo.ProcessStatus.",
 "Device.DeviceInfo.Webpa.",
+#if !defined(PON_GATEWAY)
 "Device.DeviceInfo.SupportedDataModel.",
+#endif
 "Device.DeviceInfo.X_RDKCENTRAL-COM.",
 "Device.DeviceInfo.X_RDKCENTRAL-COM_xOpsDeviceMgmt.",
 "Device.X_RDKCENTRAL-COM_Report.InterfaceDevicesWifi.",
@@ -205,12 +207,12 @@ int waitForOperationalReadyCondition()
 #elif !defined(PLATFORM_RASPBERRYPI) && !defined(RDKB_EMU) && !defined(_PLATFORM_BANANAPI_R4_)
     if(check_ethernet_wan_status() != WDMP_SUCCESS)
 	{
-#if !defined(_SKY_HUB_COMMON_PRODUCT_REQ_)
+#if !defined(_SKY_HUB_COMMON_PRODUCT_REQ_) && !defined(PON_GATEWAY)
 	    if(waitForComponentReady(RDKB_CM_COMPONENT_NAME,RDKB_CM_DBUS_PATH) != CCSP_SUCCESS)
 	    {
 		    return CM_FAILED;
 	    }
-#endif // _SKY_HUB_COMMON_PRODUCT_REQ_
+#endif // _SKY_HUB_COMMON_PRODUCT_REQ_ && PON_GATEWAY
 	}
 #endif
 	if(waitForComponentReady(CCSP_DBUS_PSM,CCSP_DBUS_PATH_PSM) != CCSP_SUCCESS)
